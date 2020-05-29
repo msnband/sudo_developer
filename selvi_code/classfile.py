@@ -3,7 +3,7 @@
 import os
 import time
 import pickle
-import shutil
+import shutil # first try
 
 class User:
     """Class for user with a privilege User.
