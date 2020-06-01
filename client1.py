@@ -24,9 +24,10 @@ class my_client:
         assert isinstance(reader,asyncio.streams.StreamReader), "Streamreader on server is not working (message from client)"
         assert isinstance(writer, asyncio.streams.StreamWriter), "Streamwriter on server is not working (message from client)"
 
+        print("\n insert command 'register' or 'login' to access the server")
 
-
-
+        while true:
+            user_command = input("\n Client is waiting...\n")
 
 
 
