@@ -8,7 +8,8 @@ signal.signal(signal.SIGINT, signal.SIG_DFL) # press Ctrl + C to stop client
 class my_client:
 
     def __init__(self):
-        self.commandList = []
+        # Defining a list to record user inputs commands
+        self.commandList = [] 
 
     async def client(self, address, portNumber):
         # check and return proper error if IP is not valid.
@@ -64,7 +65,7 @@ class my_client:
                 login <username> <password>                     Login with registered username and password to its own directory.
                 delete <username> <password>                    Delete the given username and password.
                 """
-                print(list_of_commands)
+                print(f">> {list_of_commands} << ")
                 continue
 
             if command_split[0] == "commands":
