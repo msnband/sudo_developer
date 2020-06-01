@@ -49,6 +49,24 @@ class my_client:
                 break
 
 
+            if user_command == 'commands':
+                # list of available commands
+                list_of_commands = """
+
+                    service commands:                                    Description & Option
+
+                change_folder <name>                            Change the current working directory to required directory.
+                list                                            Show all files and folders in current working directory.
+                read_file <name>                                Read the given name data from the file in current director.
+                write_file <name> <input>                       Write data the end of given name file.
+                create_folder <name>                            Creating the given name folder in current directory.
+                register <username> <password> <privileges>     Register a new username with specific accesibility.
+                login <username> <password>                     Login with registered username and password to its own directory.
+                delete <username> <password>                    Delete the given username and password.
+                """
+                print(list_of_commands)
+                continue
+
 
 
 
@@ -61,5 +79,5 @@ class my_client:
 
     if __name__ == "__main__":
         client = my_client()
-        portNumber = 8080
-        asyncio.run(client.client('127.0.0.1', portNumber))
+        port = 8080
+        asyncio.run(client.client('127.0.0.1', port))
