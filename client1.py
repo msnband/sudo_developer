@@ -67,7 +67,13 @@ class my_client:
                 print(list_of_commands)
                 continue
 
+            if command_split[0] == "commands":
+                if command_split[1] == "issued":
+                    print("\n List of commands issued are: ")
+            continue
 
+        print("Command sent: ", user_command)
+        writer.write(user_command.encode())
 
 
 
