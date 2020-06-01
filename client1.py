@@ -29,6 +29,26 @@ class my_client:
         while true:
             user_command = input("\n Client is waiting...\n")
 
+            user_command = user_command.strip()
+            
+            # Spliting input commands
+            command_split = user_command.split()
+            if len(command_split) == 0:
+                continue
+            # Recording user input commands (command history)
+            self.commandList.append(user_command)
+
+            if user_command == 'quit':
+                # sending command 'quit' to server
+                writer.write(user_command.encode())
+                incoming_command = await reader.read(12000)
+                # showing proper message to user coming from server and client
+                print("\n Signal received: ", incoming_command.decode())
+                print("Good Bye, Connection is closed.")
+                writer.close()
+                break
+
+
 
 
 
@@ -41,5 +61,5 @@ class my_client:
 
     if __name__ == "__main__":
         client = my_client()
-        port = 8080
-        asyncio.run(client.client('127.0.0.1', port))
+        portNumber = 8080
+        asyncio.run(client.client('127.0.0.1', portNumber))
