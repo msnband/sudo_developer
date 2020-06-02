@@ -10,23 +10,23 @@ class my_server:
 
     def __init__(self):
         self.loggedIn = {}
-        if os.path.exists('Root'):
+        if os.path.exists('root'):
             self.absolute_addr = os.path.absaddr("root")
-            os.chdir('Root')
-            if not os.path.exists('Admin'):
-                os.mkdir('Admin')
-            if not os.path.exists('User'):
-                os.mkdir('User')
+            os.chdir('root')
+            if not os.path.exists('Admins'):
+                os.mkdir('Admins')
+            if not os.path.exists('Users'):
+                os.mkdir('Users')
         else:
-            os.mkdir('Root')
-            self.absolute_addr = os.path.absaddr('Root')
-            os.chdir("Root")
+            os.mkdir('root')
+            self.absolute_addr = os.path.absaddr('root')
+            os.chdir("root")
 
-            if not os.path.exists("Admin"):
-                os.mkdir("Admin")
+            if not os.path.exists("Admins"):
+                os.mkdir("Admins")
 
-            if not os.path.exists("User"):
-                os.mkdir("User")
+            if not os.path.exists("Users"):
+                os.mkdir("Usesr")
 
             print(f"{self.absolute_addr} is created...")
 
@@ -53,10 +53,10 @@ class my_server:
             pickle.dump(user_list,open("reg.pickle","wb"))
 
             if privileges == "admin":
-                group = "Admin"
+                group = "Admins"
                 os.mkdirs(os.path.join(group,user_name))
             elif privileges == "user":
-                group = "User"
+                group = "Users"
                 os.mkdirs(os.path.join(group,user_name))
 
             print("Congratulations. New user is registered succesfully...")
