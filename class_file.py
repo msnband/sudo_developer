@@ -93,8 +93,25 @@ class User:
             print("File does not found!")
             return "File does not found!"
 
-            
+    def create_directory(self, folder_name):
 
+        try:
+            os.chdir(self.currentPath)
+            os.mkdir(folder_name)
+            print(f"Directory {folder_name} is created.")
+
+        except FileExistsError:
+            print(f" {folder_name} is already created! ")
+        return folder_name + " is already created!"
+
+    
+    def change_directory(sef, directory_name):
+
+        print("You are located in  ", os.getcwd())
+
+        try:
+            if directory_name == '..':
+                
 
     
 
