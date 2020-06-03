@@ -76,5 +76,25 @@ class User:
         inputData = ' '.join(text)
 
         try: 
+            """ Add to the file if exist """
+            if os.path.isfile(file_name):
+                file_to_add = open(file_name, 'a')
+                file_to_add.write(inputData + "\n")
+                file_to_add.close()
+                return " File " + file_name + " is updated. "
+
+            else:
+                file_to_write = open(file_name, 'w')
+                fil_to_write.write(inputData + "\n")
+                file_to_write.close()
+                return " File " + file_name + "is created now. "
+
+        except FileNotFoundError:
+            print("File does not found!")
+            return "File does not found!"
+
+            
+
+
     
 
