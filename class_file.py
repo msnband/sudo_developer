@@ -18,6 +18,8 @@ class User:
         self.file_name = ""
 
     
+    def __repr__(self):
+        return self.user_name
 
 
 
@@ -56,4 +58,23 @@ class User:
             
             return "File content are: \n\n" + outcome + "\n\n"
 
+
+    def write_nontext(self, file_name):
+
+        # Change to current directoty
+        os.chdir(self.currentPath)
+        # Open the file to remove its contents
+        file_erase = open(file_name, 'w')
+        file_erase.close()
+        print(f"Folder {file_name} is removed.")
+        return "Folder" + file_name + "is removed"
+
+    def write_file(self, file_name, text):
+
+        # Change to current directoty
+        os.chdir(self.currentPath)
+        inputData = ' '.join(text)
+
+        try: 
+    
 
