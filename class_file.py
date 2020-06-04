@@ -12,7 +12,7 @@ class User:
         """ Defining variables in user class"""
         self.user_name = user_name
         self.password = password
-        self.privileges = privileges
+        self.privilege = privileges
         self.currentPath = ""
         self.index = 0
         self.file_name = ""
@@ -90,8 +90,8 @@ class User:
                 return " File " + file_name + "is created now. "
 
         except FileNotFoundError:
-            print("File does not found!")
-            return "File does not found!"
+            print("* File does not found! *")
+            return "* File does not found! *"
 
     def create_directory(self, folder_name):
 
@@ -101,7 +101,7 @@ class User:
             print(f"Directory {folder_name} is created.")
 
         except FileExistsError:
-            print(f" {folder_name} is already created! ")
+            print(f"* {folder_name} is already created! *")
         return folder_name + " is already created!"
 
     
@@ -111,7 +111,31 @@ class User:
 
         try:
             if directory_name == '..':
-                
 
-    
+                # Controling user from leaving the home folder
+                if self.privilege == "user" and os.path.basename(self.currentPath) == self.user_name:
+                    print("User not permitted to leave the home folder! ")
+                    return "User not permitted to leave the home folder! "
+                
+                # Controling admin from leaving the home folder
+                if self.privilege == "admin" and os.path.basename(self.currentPath) == 'root':
+                    print("Admin is not permitted to leave from root")
+                    return "Admin is not permitted to leave from root"
+
+                os.chdir(self.currentPath)
+                os.chdir('..')
+                self.currentPath = os.getcwd()
+                print(f"You leaved the folder  {self.currentPath}.")
+
+            else:
+                os.chdir(self.currentPath)
+                os.chdir(directory_name)
+                self.currentPath = os.getcwd()
+                print(f"You changed to  {self.currentPath}")
+            return "You are located in " + self.currentPath
+
+        # Handling filenotfound error
+        except FileNotFoundError:
+            print('* Folder is not available! *')
+            return "* Folder is not available! *" 
 
