@@ -139,3 +139,14 @@ class User:
             print('* Folder is not available! *')
             return "* Folder is not available! *" 
 
+    def list_file(self):
+
+        os.chdir(self.currentPath)
+        file_list = os.listdir(os.getcwd())
+
+        if file_list:
+            for File in file_list:
+                fName = os.path.basename(os.getcwd()) + File)
+                
+
+
