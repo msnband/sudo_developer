@@ -57,7 +57,10 @@ class User:
                 self.index = 100
             
             return "File content are: \n\n" + outcome + "\n\n"
-
+        
+        except OSError:
+            print("* Request not accepted *")
+            return "* Request not accepted *"
 
     def write_nontext(self, file_name):
 
@@ -143,10 +146,31 @@ class User:
 
         os.chdir(self.currentPath)
         file_list = os.listdir(os.getcwd())
+        string_return = ""
 
         if file_list:
+
             for File in file_list:
-                fName = os.path.basename(os.getcwd()) + File)
+                
+                # Showing file name
+                fName = os.path.basename(os.getcwd()) + '\\' + File)
+                string_return += fName + "\t"
+
+                # Showing file size
+                file_size = os.path.getsize(os.getcwd() + '\\' + File)
+                string_return += str(file_size) + "\t"
+
+                # Showing file created time
+                file_time = time.ctime(os.path.getctime(os.getcwd() + '\\' + File)
+                string_return += file_time + "\n"
+
+            else:
+                string_return "* Folder is empty *" 
+
+            print(string_return)
+            return string_return
+
+    
                 
 
 
