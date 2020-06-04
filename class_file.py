@@ -172,8 +172,22 @@ class User:
 
 class Admin(User):  
 
-    def delete(user_name, password, rootPath):
-        
+    def delete(self, user_name, password, rootPath):
+
+        os.chdir(rootPath)
+
+        try:
+            with open('reg.pickle', 'rb') as user_list_file:
+                user_list = pickle.load(user_list_file)
+
+        except FileNotFoundError:
+            print("* User is not registered yet or file is not founded! *")
+            return "* User is not registered yet or file is not founded! *"
+
+        if self.privilege == "admin":
+            if self.password == password:
+                if user_name in (User.user_name for User in user_list):
+                    shutil.rmtree(os.path.join('Users', user_name))
 
 
 
