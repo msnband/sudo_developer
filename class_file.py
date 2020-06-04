@@ -187,7 +187,12 @@ class Admin(User):
         if self.privilege == "admin":
             if self.password == password:
                 if user_name in (User.user_name for User in user_list):
-                    shutil.rmtree(os.path.join('Users', user_name))
+                    # Delete user's directory
+                    try:
+                        shutil.rmtree(os.path.join('Users', user_name))
+                    except FileNotFoundError:
+                        shutil.rmtree(os.path.join('Admins', user_name))
+
 
 
 
