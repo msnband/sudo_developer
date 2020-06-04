@@ -170,6 +170,15 @@ class User:
             print(string_return)
             return string_return
 
+class Admin(User):  
+
+    def delete(user_name, password, rootPath):
+        
+
+
+
+
+
 
 
     
