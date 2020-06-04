@@ -88,7 +88,7 @@ class User:
 
             else:
                 file_to_write = open(file_name, 'w')
-                fil_to_write.write(inputData + "\n")
+                file_to_write.write(inputData + "\n")
                 file_to_write.close()
                 return " File " + file_name + "is created now. "
 
@@ -108,7 +108,7 @@ class User:
         return folder_name + " is already created!"
 
     
-    def change_directory(sef, directory_name):
+    def change_directory(self, directory_name):
 
         print("You are located in  ", os.getcwd())
 
@@ -153,7 +153,7 @@ class User:
             for File in file_list:
                 
                 # Showing file name
-                fName = os.path.basename(os.getcwd()) + '\\' + File)
+                fName = os.path.basename(os.getcwd() + '\\' + File)
                 string_return += fName + "\t"
 
                 # Showing file size
@@ -161,14 +161,16 @@ class User:
                 string_return += str(file_size) + "\t"
 
                 # Showing file created time
-                file_time = time.ctime(os.path.getctime(os.getcwd() + '\\' + File)
+                file_time = time.ctime(os.path.getctime(os.getcwd() + '\\' + File))
                 string_return += file_time + "\n"
 
             else:
-                string_return "* Folder is empty *" 
+                string_return = '* Folder is empty *' 
 
             print(string_return)
             return string_return
+
+
 
     
                 
