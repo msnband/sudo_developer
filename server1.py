@@ -29,8 +29,8 @@ class my_server:
 
             if not os.path.exists("Users"):
                 os.mkdir("Usesr")
-
             print(f"{self.absolute_addr} is created...")
+            self.loggedIn = {}
 
     def register(self,user_name,password,privileges):
         os.chdir(self.absolute_addr)
@@ -64,10 +64,34 @@ class my_server:
             print("Congratulations. New user is registered succesfully...")
             return "Congratulations. New user is registered succesfully..."  
 
+        # Check if the username is already exists, return proper message
+        print("Username you enterd is not valid or already exists")
+        return "Username you enterd is not valid or already exists"
+
+    def login(self, user_name, password, tcpIP):
+        os.chdir(self.absolute_addr)
+        with open('reg.pickle', 'rb') as listFile:
+            user_list = pickle.load(listFile)
+
+        # Check if client is already logged in.
+        if tcpIP in self.loggedIn.keys():
+            if user_name in [user.user_name for user in self.loggedIn.values()]:
+                return 'The port is already occupied with the same username'
+            return 'The port is already occupied with another username'
+
+        # Check user is logged in
+        if user_name not in [user.user_name for user in self.loggedIn.values()]:
+            pass
         else:
-            # Check if the username is already exists, return proper message
-            print("Username you enterd is not valid or already exists")
-            return "Username you enterd is not valid or already exists"
+            return "This user is logged in with different port"
+
+        if user_name in [User.user_name for User in user_list]:
+            pass
+        else:
+            print('Insert a valid username...')
+            return 'You inserted invalid username'
+
+        
 
 
 
