@@ -71,20 +71,21 @@ class my_client:
             if command_split[0] == "commands":
                 if command_split[1] == "issued":
                     print("\n List of commands issued are: ")
+                    for comd in self.commandList:
+                        print(comd)
+
+                if command_split[1] == 'clear':
+                    self.commandList = []
+                    print('\nHistory removed successfully')
             continue
 
         print("Command sent: ", user_command)
         writer.write(user_command.encode())
+        incoming_command = await reader.read(12000)
+        print("\nCommand received:  ", incoming_command.decode())
 
 
 
-
-
-
-
-
-
-    if __name__ == "__main__":
-        client = my_client()
-        port = 8080
-        asyncio.run(client.client('127.0.0.1', port))
+if __name__ == "__main__":
+    client = my_client()
+    asyncio.run(client.client('127.0.0.1',8080))
