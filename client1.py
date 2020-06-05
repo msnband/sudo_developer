@@ -1,6 +1,4 @@
 
-# Importing required libraries
-
 import signal
 import asyncio
 
