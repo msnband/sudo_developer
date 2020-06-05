@@ -193,7 +193,25 @@ class Admin(User):
                     except FileNotFoundError:
                         shutil.rmtree(os.path.join('Admins', user_name))
 
+                    # Delete user from pickle
+                    userlist_new = []
+                    for user in user_list:
+                        if user.user_name != user_name:
+                            userlist_new.append(user)
 
+                    user_list_file = open('reg.pickle', 'wb')
+                    pickle.dump(userlist_new, user_list_file)
+                    print(f'{user_name} is deleted.')
+                    return f"{user_name} is deleted."
+
+                print(f"{user_name} not exist.")
+                return (f"{user_name} not exist.")
+
+            print(f'Admin password is incorrect {self.user_name}')
+            return f'Admin password is incorrect {self.user_name}'
+
+        print("Your privilege must be Admin")
+        return "Your privilege must be Admin"
 
 
 
