@@ -1,4 +1,5 @@
-# importing required libraries
+
+# Importing required libraries
 
 import signal
 import asyncio
@@ -27,7 +28,7 @@ class my_client:
 
         print("\n insert command 'register' or 'login' to access the server")
 
-        while true:
+        while True:
             user_command = input("\n Client is waiting...\n")
 
             user_command = user_command.strip()
