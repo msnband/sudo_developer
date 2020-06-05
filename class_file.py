@@ -24,6 +24,7 @@ class User:
 
 
     def read_noninput(self):
+
         temporary = self.file_name
         self.file_name = ""
         self.index = 0
@@ -32,7 +33,7 @@ class User:
 
 
 
-    def readfile(self, file_name):
+    def read_file(self, file_name):
         """ Change to current user directory """
         os.chdir(self.currentPath)
 
@@ -66,6 +67,7 @@ class User:
 
         # Change to current directoty
         os.chdir(self.currentPath)
+
         # Open the file to remove its contents
         file_erase = open(file_name, 'w')
         file_erase.close()
@@ -86,11 +88,11 @@ class User:
                 file_to_add.close()
                 return " File " + file_name + " is updated. "
 
-            else:
-                file_to_write = open(file_name, 'w')
-                file_to_write.write(inputData + "\n")
-                file_to_write.close()
-                return " File " + file_name + "is created now. "
+            
+            file_to_write = open(file_name, 'w')
+            file_to_write.write(inputData + "\n")
+            file_to_write.close()
+            return " File " + file_name + "is created now. "
 
         except FileNotFoundError:
             print("* File does not found! *")
@@ -186,7 +188,7 @@ class Admin(User):
 
         if self.privilege == "admin":
             if self.password == password:
-                if user_name in (User.user_name for User in user_list):
+                if user_name in [User.user_name for User in user_list]:
                     # Delete user's directory
                     try:
                         shutil.rmtree(os.path.join('Users', user_name))
@@ -201,15 +203,15 @@ class Admin(User):
 
                     user_list_file = open('reg.pickle', 'wb')
                     pickle.dump(userlist_new, user_list_file)
-                    print(f'{user_name} is deleted.')
-                    return f"{user_name} is deleted."
-
-                print(f"{user_name} not exist.")
-                return (f"{user_name} not exist.")
-
+                    print(f'{user_name} is removed.')
+                    return f"{user_name} is removed."
+                # If user is not exist, return proper error.
+                print(f"{user_name} not availabe.")
+                return (f"{user_name} not availabe.")
+            # If Admin password is not correct, return proper error.
             print(f'Admin password is incorrect {self.user_name}')
             return f'Admin password is incorrect {self.user_name}'
-
+        # If user is not admin, does not have accesibility to this function.
         print("Your privilege must be Admin")
         return "Your privilege must be Admin"
 
