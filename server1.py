@@ -111,13 +111,46 @@ class my_server:
         print(f"Successfully logged in, You are now in root/{group}/{user_name}")
         return f"Successfully logged in, You are now in root/{group}/{user_name}"
 
-    async def command_handle(self, read, write):
+    async def command_handle(self, reader, writer):
 
         assert isinstance(read, asyncio.streams.StreamReader), \
             '* Stream reader in server Error *'
 
         assert isinstance(write, asyncio.streams.StreamWriter), \
             '* Stream writer in server Error *'
+
+        while True:
+            """ server waiting for new commands from clients """
+            incoming_command = await reader.read(12000)
+            commands = incoming_command.decode()
+            address = writer.get_extra_info("peername")
+            print(f"Received {commands!r} cooming from {address!r}")
+            commands_spilit = commands.split('')
+
+            # Check if Ip contains invalid charachters showing proper error.
+            for wrd in address[0]:
+                assert(wrd.isnumeric() or wrd == "."), \
+                    "* Your have entered invalid charachte in your IP *"
+            # Check to make sure port number is in this range.
+            assert 1022 < address[1] < 65535, \
+                "* Port number is out of range *" 
+
+            try:
+                user = self.loggedIn[address]
+                print(f"{address} is related to {user}")
+
+                if commands == 'list':
+                    writer.write(list_file().encode())
+                    await writer.drain()
+                    os.chdir(self.absolute_addr)
+                    continue
+
+                if commands_spilit[0] == 'change_folder':
+                    try:
+                        writer.write(user.change_directory(commands_spilit[1]).encode())
+                        await writer.drain()
+                        os.chdir(self.absolute_addr)
+                        continue
 
         
 
@@ -144,8 +177,8 @@ class my_server:
 
     async def main(self):
         server = await asyncio.start_server(self.command_handle, '127.0.0.1',8080)
-        addr = server.sockets[0].getsockname()
-        print("Connection with ", addr)
+        address = server.sockets[0].getsockname()
+        print("Connection with ", address)
 
         async with server:
             await server.serve_forever()
