@@ -113,10 +113,10 @@ class my_server:
 
     async def command_handle(self, reader, writer):
 
-        assert isinstance(read, asyncio.streams.StreamReader), \
+        assert isinstance(reader, asyncio.streams.StreamReader), \
             '* Stream reader in server Error *'
 
-        assert isinstance(write, asyncio.streams.StreamWriter), \
+        assert isinstance(writer, asyncio.streams.StreamWriter), \
             '* Stream writer in server Error *'
 
         while True:
@@ -301,7 +301,7 @@ class my_server:
 
 
     async def main(self):
-        
+
         server = await asyncio.start_server(self.command_handle, '127.0.0.1',8080)
         address = server.sockets[0].getsockname()
         print("Connection with ", address)
