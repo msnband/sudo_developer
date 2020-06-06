@@ -91,7 +91,10 @@ class my_server:
             print('Insert a valid username...')
             return 'You inserted invalid username'
 
-        
+        for i in user_list:
+            if i.user_name == user_name:
+                user = i
+                break
 
 
 
