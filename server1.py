@@ -182,6 +182,27 @@ class my_server:
                         await writer.drain()
                         continue
 
+                if commands_spilit[0] == 'write_file':
+
+                    try:
+                        if len(commands_spilit) >=3:
+                            writer.write(user.write_file(commands_spilit[1], commands_spilit[2:]).encode(encoding='utf-8'))
+                            await writer.drain()
+                            os.chdir(self.absolute_addr)
+                            continue
+
+                        else:
+                            writer.write(user.write_nontext(commands_spilit[1]).encode())
+                            await writer.drain()
+                            os.chdir(self.absolute_addr)
+                            continue
+
+                    except IndexError:
+                        ERROR = "write file command should be in form 'write_file <name> <text> '"
+                        print(ERROR)
+                        writer.write(ERROR.encode())
+                        await writer.drain()
+                        continue
 
 
 
