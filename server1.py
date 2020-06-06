@@ -220,6 +220,42 @@ class my_server:
                         continue
 
 
+                if commands_spilit[0] == 'delete':
+
+                    try:
+
+                        try:
+                            writer.write(user.delete(commands_spilit[1], commands_spilit[2], self.absolute_addr).encode())
+                            await writer.drain()
+
+                        except AttributeError:
+                            ERROR = "* Permission denied! User with privilege 'Admin' has permission to remove commmands. *"
+                            print(ERROR)
+                            writer.write(ERROR.encode())
+                            await writer.drain()
+                            continue
+
+                        removedUser = commands_spilit[1]
+                        for logPath, logUser in self.loggedIn.items():
+                            if str(logUser) == removedUser:
+                                del self.loggedIn[logPath]
+                                print(f"{removedUser} is looged out from system.")
+                                break
+
+                        print(f"{removedUser} did not log in so far! ")
+
+                    except IndexError:
+
+                        ERROR = "delete command should be in the form 'delete <username> <password>'"
+                        print(ERROR)
+                        writer.write(ERROR.encode())
+                        await writer.drain()
+
+                    continue
+                    
+
+
+
 
 
 
