@@ -15,10 +15,10 @@ class my_client:
         for j in address:
             assert(j.isnumeric() or j == "."), " The IP contains wrong or invalid charachters"
 
-        assert 1022 < portNumber < 65535, "Port number is out of range!"
+        assert 1023 < portNumber < 65535, "Port number is out of range!"
 
         # Establish a TCP connection to server
-        reader,writer = await asyncio.open_connection(address, portNumber)
+        reader, writer = await asyncio.open_connection(address, portNumber)
         
         # assert proper error if TCP connection has problem.
         assert isinstance(reader,asyncio.streams.StreamReader), "Streamreader on server is not working (message from client)"
@@ -28,9 +28,7 @@ class my_client:
 
         while True:
             user_command = input("\n Client is waiting...\n")
-
             user_command = user_command.strip()
-            
             # Spliting input commands
             command_split = user_command.split()
             if len(command_split) == 0:

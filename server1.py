@@ -13,7 +13,7 @@ class my_server:
     def __init__(self):
         self.loggedIn = {}
         if os.path.exists('root'):
-            self.absolute_addr = os.path.absaddr("root")
+            self.absolute_addr = os.path.abspath("root")
             os.chdir('root')
             if not os.path.exists('Admins'):
                 os.mkdir('Admins')
@@ -21,7 +21,7 @@ class my_server:
                 os.mkdir('Users')
         else:
             os.mkdir('root')
-            self.absolute_addr = os.path.absaddr('root')
+            self.absolute_addr = os.path.abspath('root')
             os.chdir("root")
 
             if not os.path.exists("Admins"):
@@ -302,7 +302,7 @@ class my_server:
 
     async def main(self):
 
-        server = await asyncio.start_server(self.command_handle, '127.0.0.1',8080)
+        server = await asyncio.start_server(self.command_handle, '127.0.0.1', 8080)
         address = server.sockets[0].getsockname()
         print("Connection with ", address)
 
@@ -310,7 +310,7 @@ class my_server:
             await server.serve_forever()
 
 
-        if __name__ == "__main__":
-            Newserver = Server()
-            asyncio.run(Newserver.main())
+if __name__ == "__main__":
+    Newserver = my_server()
+    asyncio.run(Newserver.main())
             
