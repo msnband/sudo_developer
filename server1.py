@@ -252,40 +252,56 @@ class my_server:
                         await writer.drain()
 
                     continue
-                    
 
+                if commands == "quit":
 
+                    print(f"Successfully logged out from system {self.loggedIn[address]}")
+                    writer.write(f"Successfully logged out from system {self.loggedIn[address]}".encode())
+                    del self.loggedIn[address]
+                    await writer.drain()
+                    break
+            except KeyError:
+                print("* This username is not logged in yet...! *")
 
+                if commands_spilit[0] == "register":
 
+                    try:
+                        writer.write(self.register(commands_spilit[1], commands_spilit[2], commands_spilit[3]).encode())
+                        await writer.drain()
+                        continue
+                    except IndexError:
+                        ERROR = "register command should be in the form 'register <username> <password> <privilege>' "
+                        print(ERROR)
+                        writer.write(ERROR.encode())
+                        await writer.drain()
+                        continue
 
+                if commands_spilit[0] == 'login':
+                    try:
 
+                        writer.write(self.login(commands_spilit[1], commands_spilit[2], address).encode())
+                        await writer.drain()
+                        continue
 
+                    except IndexError:
+                        ERROR = "login command should be in the form 'login <username> <password>' "
+                        print(ERROR)
+                        writer.write(ERROR.encode())
+                        await writer.drain()
+                        continue
 
+                if commands == "quit":
+                    print("Exiting system...")
+                    writer.write("Exiting system...".encode())
+                    await writer.drain()
+                    break
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+            writer.write("Syntax issue: Check command spelling & check wether you logged in or not!".encode())
+            await writer.drain()
 
 
     async def main(self):
+        
         server = await asyncio.start_server(self.command_handle, '127.0.0.1',8080)
         address = server.sockets[0].getsockname()
         print("Connection with ", address)
