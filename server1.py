@@ -95,8 +95,31 @@ class my_server:
             if i.user_name == user_name:
                 user = i
                 break
+        
+        # Check password wether it is correct or not showing proper message.
+        if password == user.password:
+            print('Password is correct.')
+        else:
+            return('Wrong password!')
+        print('You logged in successfully.')
 
+        group = user.privilege.capitalize() + 's'
+        print(f'your group is {group}.')
+        user.currentPath = os.path.join(self.absolute_addr, group, user_name)
 
+        self.loggedIn.update({tcpIP: user})
+        print(f"Successfully logged in, You are now in root/{group}/{user_name}")
+        return f"Successfully logged in, You are now in root/{group}/{user_name}"
+
+    async def command_handle(self, read, write):
+
+        assert isinstance(read, asyncio.streams.StreamReader), \
+            '* Stream reader in server Error *'
+
+        assert isinstance(write, asyncio.streams.StreamWriter), \
+            '* Stream writer in server Error *'
+
+        
 
 
 
