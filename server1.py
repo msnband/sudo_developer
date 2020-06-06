@@ -204,6 +204,26 @@ class my_server:
                         await writer.drain()
                         continue
 
+                if commands_spilit[0] == 'create_folder':
+
+                    try:
+                        writer.write(user.create_directory(commands_spilit[1]).encode())
+                        await writer.drain()
+                        os.chdir(self.absolute_addr)
+                        continue
+
+                    except IndexError:
+                        ERROR = "create folder command should be in form 'create_folder <name>'"
+                        print(ERROR)
+                        writer.write(ERROR.encode())
+                        await writer.drain()
+                        continue
+
+
+
+
+
+
 
 
 
