@@ -152,7 +152,40 @@ class my_server:
                         os.chdir(self.absolute_addr)
                         continue
 
-        
+                    except IndexError:
+                        ERROR = "* change folder command should be in form 'change_folder <name>' *"
+                        print(ERROR)
+                        writer.write(ERROR.encode())
+                        await writer.drain()
+                        continue
+
+                if commands_spilit[0] == 'read_file':
+
+                    try:
+                        if len(commands_spilit) == 2:
+                            writer.write(user.read_file(commands_spilit[1]).encode())
+                            await writer.drain()
+                            os.chdir(self.absolute_addr)
+                            continue
+
+                        else:
+                            writer.write(user.read_noninput().encode())
+                            await writer.drain()
+                            os.chdir(self.absolute_addr)
+                            continue
+
+                    except IndexError:
+                        
+                        ERROR = "read file command should be in form 'read_file <name> '"
+                        print(ERROR)
+                        writer.write(ERROR.encode())
+                        await writer.drain()
+                        continue
+
+
+
+
+
 
 
 
