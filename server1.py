@@ -6,7 +6,7 @@ import asyncio
 
 import class_file
 
-signal.signal(signal.SIGNIT,signal.SIG_DFL)
+signal.signal(signal.SIGINT, signal.SIG_DFL)
 
 class my_server:
 
