@@ -11,7 +11,7 @@ signal.signal(signal.SIGINT, signal.SIG_DFL)
 class my_server:
 
     def __init__(self):
-        self.loggedIn = {}
+        
         if os.path.exists('root'):
             self.absolute_addr = os.path.abspath("root")
             os.chdir('root')
