@@ -41,7 +41,7 @@ class my_client:
                 writer.write(user_command.encode())
                 incoming_command = await reader.read(12000)
                 # showing proper message to user coming from server and client
-                print("\n Signal received: ", incoming_command.decode())
+                print(f"\n Signal received: {incoming_command.decode()}")
                 print("Good Bye, Connection is closed.")
                 writer.close()
                 break
@@ -74,12 +74,12 @@ class my_client:
                 if command_split[1] == 'clear':
                     self.commandList = []
                     print('\nHistory removed successfully')
-            continue
+                continue
 
-        print("Command sent: ", user_command)
-        writer.write(user_command.encode())
-        incoming_command = await reader.read(12000)
-        print("\nCommand received:  ", incoming_command.decode())
+            print("Command sent: ", user_command)
+            writer.write(user_command.encode())
+            incoming_command = await reader.read(12000)
+            print("\nCommand received:  ", incoming_command.decode())
 
 
 
