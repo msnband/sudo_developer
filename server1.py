@@ -55,10 +55,10 @@ class my_server:
 
             if privileges == "admin":
                 group = "Admins"
-                os.mkdirs(os.path.join(group,user_name))
+                os.makedirs(os.path.join(group,user_name))
             elif privileges == "user":
                 group = "Users"
-                os.mkdirs(os.path.join(group,user_name))
+                os.makedirs(os.path.join(group,user_name))
 
             print("Congratulations. New user is registered succesfully...")
             return "Congratulations. New user is registered succesfully..."  
