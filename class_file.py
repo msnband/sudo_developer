@@ -28,9 +28,7 @@ class User:
         temporary = self.file_name
         self.file_name = ""
         self.index = 0
-        message = "file has been closed"
-        return temporary + message
-
+        return temporary + "file has been closed"
 
 
     def read_file(self, file_name):
@@ -44,7 +42,7 @@ class User:
             if self.file_name == file_name:
                 file_to_read = open(self.file_name, 'r')
                 outcome = file_to_read.read(self.index + 100)
-                outcome = outcome[self.index: ]
+                outcome = outcome[self.index:]
                 if len(outcome) < 100:
                     self.index = -100
                 file_to_read.close()
@@ -72,7 +70,8 @@ class User:
         file_erase = open(file_name, 'w')
         file_erase.close()
         print(f"Folder {file_name} is removed.")
-        return "Folder" + file_name + "is removed"
+        outcome = "Folder" + file_name + "is removed"
+        return outcome
 
     def write_file(self, file_name, text):
 
@@ -86,13 +85,15 @@ class User:
                 file_to_add = open(file_name, 'a')
                 file_to_add.write(inputData + "\n")
                 file_to_add.close()
-                return " File " + file_name + " is updated. "
+                outcome = " File " + file_name + " is updated. "
+                return outcome
 
             
             file_to_write = open(file_name, 'w')
             file_to_write.write(inputData + "\n")
             file_to_write.close()
-            return " File " + file_name + "is created now. "
+            outcome = " File " + file_name + "is created now. "
+            return outcome
 
         except FileNotFoundError:
             print("* File does not found! *")
@@ -106,8 +107,9 @@ class User:
             print(f"Directory {folder_name} is created.")
 
         except FileExistsError:
-            print(f"* {folder_name} is already created! *")
-        return folder_name + " is already created!"
+            outcome = folder_name + " is already created!" 
+            print(outcome)
+        return outcome
 
     
     def change_directory(self, directory_name):
@@ -183,7 +185,6 @@ class Admin(User):
                 user_list = pickle.load(user_list_file)
 
         except FileNotFoundError:
-            print("* User is not registered yet or file is not founded! *")
             return "* User is not registered yet or file is not founded! *"
 
         if self.privilege == "admin":
@@ -204,13 +205,16 @@ class Admin(User):
                     user_list_file = open('reg.pickle', 'wb')
                     pickle.dump(userlist_new, user_list_file)
                     print(f'{user_name} is removed.')
-                    return f"{user_name} is removed."
+                    outcome = user_name + "is removed."
+                    return outcome
                 # If user is not exist, return proper error.
                 print(f"{user_name} not availabe.")
-                return (f"{user_name} not availabe.")
+                outcome = user_name + "not availabe."
+                return outcome
             # If Admin password is not correct, return proper error.
             print(f'Admin password is incorrect {self.user_name}')
-            return f'Admin password is incorrect {self.user_name}'
+            outcome = f'Admin password is incorrect {self.user_name}'
+            return outcome
         # If user is not admin, does not have accesibility to this function.
         print("Your privilege must be Admin")
         return "Your privilege must be Admin"

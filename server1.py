@@ -3,7 +3,6 @@ import signal
 import os
 import pickle
 import asyncio
-
 import class_file
 
 signal.signal(signal.SIGINT, signal.SIG_DFL)
@@ -29,8 +28,8 @@ class my_server:
 
             if not os.path.exists("Users"):
                 os.mkdir("Usesr")
-            print(f"{self.absolute_addr} is created...")
-            self.loggedIn = {}
+        print(f"{self.absolute_addr} is created...")
+        self.loggedIn = {}
 
     def register(self,user_name,password,privileges):
         os.chdir(self.absolute_addr)
@@ -40,15 +39,15 @@ class my_server:
 
         try:
             with open("reg.pickle",'rb') as listFile:
-                userList = pickle.load(listFile)
+                user_list = pickle.load(listFile)
 
         except FileNotFoundError:
             user_list = []
 
         if privileges == "user":
-            new_user = class_file.User(user_name,password,privileges)
+            new_user = class_file.User(user_name, password, privileges)
         elif privileges == "admin":
-            new_user = class_file.Admin(user_name,password,privileges)
+            new_user = class_file.Admin(user_name, password, privileges)
 
         if new_user.user_name not in [User.user_name for User in user_list]:
             user_list.append(new_user)
@@ -108,8 +107,8 @@ class my_server:
         user.currentPath = os.path.join(self.absolute_addr, group, user_name)
 
         self.loggedIn.update({tcpIP: user})
-        print(f"Successfully logged in, You are now in root/{group}/{user_name}")
-        return f"Successfully logged in, You are now in root/{group}/{user_name}"
+        outcome = f"Successfully logged in, You are now in root/{group}/{user_name}"
+        return outcome
 
     async def command_handle(self, reader, writer):
 
@@ -125,14 +124,14 @@ class my_server:
             commands = incoming_command.decode()
             address = writer.get_extra_info("peername")
             print(f"Received {commands!r} cooming from {address!r}")
-            commands_spilit = commands.split('')
+            commands_spilit = commands.split(' ')
 
             # Check if Ip contains invalid charachters showing proper error.
             for wrd in address[0]:
-                assert(wrd.isnumeric() or wrd == "."), \
+                assert(wrd.isnumeric() or wrd == "."),  \
                     "* Your have entered invalid charachte in your IP *"
             # Check to make sure port number is in this range.
-            assert 1022 < address[1] < 65535, \
+            assert 1023 < address[1] < 65535, \
                 "* Port number is out of range *" 
 
             try:
@@ -140,7 +139,7 @@ class my_server:
                 print(f"{address} is related to {user}")
 
                 if commands == 'list':
-                    writer.write(list_file().encode())
+                    writer.write(user.list_file().encode())
                     await writer.drain()
                     os.chdir(self.absolute_addr)
                     continue
@@ -218,7 +217,6 @@ class my_server:
                         writer.write(ERROR.encode())
                         await writer.drain()
                         continue
-
 
                 if commands_spilit[0] == 'delete':
 
