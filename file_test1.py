@@ -46,3 +46,31 @@ class TCPconnectionCheck(unittest.TestCase):
         listFile = open('reg.pickle', 'wb')
         pickle.dump(new_user, listFile)
         listFile.close()
+
+        self.assertEqual(login_outcome, expected_login_outcome)
+        self.assertEqual(outcome, expected_outcome)
+
+    def change_directory_test(self):
+
+        usr = class_file.User('name', 'password', 'user')
+        usr.currentPath = os.path.join(main_path, 'root', 'Users')
+        expected_outcome = "You are located in " + usr.currentPath + "\\Users"
+        outcome = usr.change_directory("Users")
+        os.chdir(main_path)
+        self.assertEqual(outcome, expected_outcome)
+
+    def write_file_test(self):
+
+        usr = class_file.User("name", 'password', 'user')
+        usr.currentPath = os.path.join(main_path, 'root', "Users")
+        expected_outcome = ["File text.txt is created", "File text.txt is updated"]
+        outcome = []
+        input_check = ['text.txt', 'text.txt']
+
+        outcome.append(usr.write_file(input_check[0], 'testing'))
+        outcome.append(usr.write_file(input_check[1], 'testing'))
+
+        self.assertEqual(outcome, expected_outcome)
+        os.chdir(main_path)
+    
+
