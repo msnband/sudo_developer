@@ -1,4 +1,4 @@
-# The module is contains the class for user and admin for both client and server to manage the files
+# The module contains the class for user and admin for both client and server to manage the files
 
 """ importing required libraries for the module """
 import shutil
@@ -7,6 +7,7 @@ import time
 import pickle
 
 class User:
+    """ class for privilege user """
 
     def __init__(self, user_name, password, privileges):
         """ Defining variables in user class"""
@@ -16,6 +17,13 @@ class User:
         self.currentPath = ""
         self.index = 0
         self.file_name = ""
+
+    """ Attributes: 
+
+    user_name = string
+    password = string
+    privileges = string
+    currentPath = string """
 
     
     def __repr__(self):
@@ -30,17 +38,24 @@ class User:
         self.index = 0
         return temporary + "file has been closed"
 
+    """ If user insert read file command without name of the file
+    It should close the file."""
+
 
     def read_file(self, file_name):
         """ Change to current user directory """
         os.chdir(self.currentPath)
 
-        """ opening the file for reading """
+        """ If the user insert command 'read_file', this
+        command will implement the required service for user """
+
+        # opening the file for reading. 
 
         try:
 
             if self.file_name == file_name:
                 file_to_read = open(self.file_name, 'r')
+                # Reading the first 100 charachters from the opened file
                 outcome = file_to_read.read(self.index + 100)
                 outcome = outcome[self.index:]
                 if len(outcome) < 100:
@@ -63,6 +78,10 @@ class User:
 
     def write_nontext(self, file_name):
 
+    # If user insert write file command without name of the file 
+    # It should close the file. 
+    # file_name = str """
+
         # Change to current directoty
         os.chdir(self.currentPath)
 
@@ -75,6 +94,11 @@ class User:
 
     def write_file(self, file_name, text):
 
+    # If the user insert command 'write_file', this command
+    # will implement the required service for user.
+
+    
+
         # Change to current directoty
         os.chdir(self.currentPath)
         inputData = ' '.join(text)
@@ -82,6 +106,7 @@ class User:
         try: 
             """ Add to the file if exist """
             if os.path.isfile(file_name):
+                # open file to write on it. 
                 file_to_add = open(file_name, 'a')
                 file_to_add.write(inputData + "\n")
                 file_to_add.close()
@@ -92,28 +117,31 @@ class User:
             file_to_write = open(file_name, 'w')
             file_to_write.write(inputData + "\n")
             file_to_write.close()
-            outcome = " File " + file_name + "is created now. "
+            outcome = " File " + file_name + " is created now. "
             return outcome
-
+        # Error handling in case required file is not exist!
         except FileNotFoundError:
             print("* File does not found! *")
             return "* File does not found! *"
 
     def create_directory(self, folder_name):
-
+    # This function is designed to create folder in the current path.
+    # when creating the folder, change current path to created folder.
+    
         try:
             os.chdir(self.currentPath)
             os.mkdir(folder_name)
             print(f"Directory {folder_name} is created.")
-
+        # Error handling in case the given name is already exist!
         except FileExistsError:
-            outcome = folder_name + " is already created!" 
+            outcome = folder_name + "* is created! *" 
             print(outcome)
-        return outcome
+        return folder_name + "* is created! *"
 
     
     def change_directory(self, directory_name):
-
+    # This function is designed to be able to move along the directories and folders
+    # to see the contents... 
         print("You are located in  ", os.getcwd())
 
         try:
@@ -141,12 +169,15 @@ class User:
                 print(f"You changed to  {self.currentPath}")
             return "You are located in " + self.currentPath
 
-        # Handling filenotfound error
+        # Handling filenotfound error in case folder is not created yet.
         except FileNotFoundError:
             print('* Folder is not available! *')
             return "* Folder is not available! *" 
 
     def list_file(self):
+        """ This function is designed to list all available files and folders
+        in the current work directory. It also shows the time, date and size of 
+        file created."""
 
         os.chdir(self.currentPath)
         file_list = os.listdir(os.getcwd())
@@ -156,34 +187,44 @@ class User:
 
             for File in file_list:
                 
-                # Showing file name
+                # Showing and returning file name
                 fName = os.path.basename(os.getcwd() + '\\' + File)
                 string_return += fName + "\t"
 
-                # Showing file size
+                # Showing and returning file size
                 file_size = os.path.getsize(os.getcwd() + '\\' + File)
                 string_return += str(file_size) + "\t"
 
-                # Showing file created time
+                # Showing file returning created time
                 file_time = time.ctime(os.path.getctime(os.getcwd() + '\\' + File))
                 string_return += file_time + "\n"
 
-            else:
-                string_return = '* Folder is empty *' 
+        else:
+            string_return = '* Folder is empty *' 
 
-            print(string_return)
-            return string_return
+        print(string_return)
+        return string_return
 
 class Admin(User):  
 
     def delete(self, user_name, password, rootPath):
 
+    # This function is designed to delete registered 
+    # username and password. Only user with Admin privileges 
+    # is permitted to delete user from system. 
+    
+    # Attributes:
+    #    user_name = str
+    #    password = str
+    #    rootPath = str
+
+        # Change to root folder
         os.chdir(rootPath)
 
         try:
             with open('reg.pickle', 'rb') as user_list_file:
                 user_list = pickle.load(user_list_file)
-
+        # Handling error in case user is not registered yet. 
         except FileNotFoundError:
             return "* User is not registered yet or file is not founded! *"
 
@@ -196,7 +237,7 @@ class Admin(User):
                     except FileNotFoundError:
                         shutil.rmtree(os.path.join('Admins', user_name))
 
-                    # Delete user from pickle
+                    # Delete user from pickle file
                     userlist_new = []
                     for user in user_list:
                         if user.user_name != user_name:

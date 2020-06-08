@@ -1,20 +1,28 @@
+# This module contains all classes and functions
+# required in the task. 
 
+# importing required libraries.
 import signal
 import asyncio
 
-signal.signal(signal.SIGINT, signal.SIG_DFL) # press Ctrl + C to stop client
+# press Ctrl + C to stop connection. 
+signal.signal(signal.SIGINT, signal.SIG_DFL) 
 
+# The class "my_client" is designed to connect client to server
+# and handling some commands which asked in the task.
 class my_client:
-
+    
     def __init__(self):
-        # Defining a list to record user inputs commands
+        # Initializing a list to record user inputs commands.
         self.commandList = [] 
 
     async def client(self, address, portNumber):
+
         # check and return proper error if IP is not valid.
         for j in address:
             assert(j.isnumeric() or j == "."), " The IP contains wrong or invalid charachters"
 
+        # Check the port number wether in specific range or not.
         assert 1023 < portNumber < 65535, "Port number is out of range!"
 
         # Establish a TCP connection to server
@@ -23,7 +31,7 @@ class my_client:
         # assert proper error if TCP connection has problem.
         assert isinstance(reader,asyncio.streams.StreamReader), "Streamreader on server is not working (message from client)"
         assert isinstance(writer, asyncio.streams.StreamWriter), "Streamwriter on server is not working (message from client)"
-
+        # Client starting text...
         print("\n insert command 'register' or 'login' to access the server")
 
         while True:
@@ -36,6 +44,7 @@ class my_client:
             # Recording user input commands (command history)
             self.commandList.append(user_command)
 
+            # implementing 'quit' command.
             if user_command == 'quit':
                 # sending command 'quit' to server
                 writer.write(user_command.encode())
@@ -46,7 +55,7 @@ class my_client:
                 writer.close()
                 break
 
-
+            # implementing 'commands' command.
             if user_command == 'commands':
                 # list of available commands
                 list_of_commands = """
@@ -64,12 +73,13 @@ class my_client:
                 """
                 print(f">> {list_of_commands} << ")
                 continue
-
+                
+            # implementing 'issued & clear' options for 'commands'.
             if command_split[0] == "commands":
                 if command_split[1] == "issued":
-                    print("\n List of commands issued are: ")
+                    print("\n\t\t List of commands issued are: ")
                     for comd in self.commandList:
-                        print(comd)
+                        print(f"\t\t\n{comd}")
 
                 if command_split[1] == 'clear':
                     self.commandList = []
@@ -79,10 +89,9 @@ class my_client:
             print("Command sent: ", user_command)
             writer.write(user_command.encode())
             incoming_command = await reader.read(12000)
-            print("\nCommand received:  ", incoming_command.decode())
-
-
+            print("\nCommand received: \n\n ", incoming_command.decode())
 
 if __name__ == "__main__":
+    # creating object from 'my_client'.
     client = my_client()
     asyncio.run(client.client('127.0.0.1',8080))
