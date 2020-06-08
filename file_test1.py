@@ -74,4 +74,19 @@ class TCPconnectionCheck(unittest.TestCase):
         os.remove('text.txt')
         os.chdir(main_path)
     
+    def create_directory_test(self):
 
+        usr = class_file.User('name', "password", 'user')
+        usr.currentPath = os.path.join(main_path, 'root', 'Users')
+        expected_outcome = ["Folder create TESTING", "Folder already exists TESTING"]
+        outcome = []
+        input_check = ["TESTING", "TESTING"]
+
+        outcome.append(usr.create_directory(input_check[0]))
+        outcome.append(usr.create_directory(input_check[1]))
+
+        self.assertEqual(outcome, expected_outcome)
+        os.rmdir("TESTING")
+        os.chdir(main_path)
+
+    
