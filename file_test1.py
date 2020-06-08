@@ -89,4 +89,42 @@ class TCPconnectionCheck(unittest.TestCase):
         os.rmdir("TESTING")
         os.chdir(main_path)
 
+    def list_file_test(self):
+
+        usr = class_file.User("name", "password", "user")
+        usr.currentPath = os.path.join(main_path, 'root', 'Users')
+        usr.create_directory("file_test")
+        usr.currentPath = os.path.join(usr.currentPath, "file_test")
+        expected_outcome = '* Folder is empty *'
+        outcome = usr.list_file()
+        self.assertEqual(outcome, expected_outcome)
+        os.chdir(main_path)
+
+    def read_noninput_test(self):
+
+        usr = class_file.User("name", 'password', 'user')
+        usr.currentPath = os.path.join(main_path, 'root', 'Users')
+        usr.file_name = 'random_file.extension'
+        expected_outcome = "random_file.extension is closed"
+        outcome = usr.read_noninput()
+        self.assertEqual(outcome, expected_outcome)
+        os.chdir(main_path)
+
+    def write_nontext_test(self):
+        
+        usr = class_file.User("name", "password", "user")
+        usr.currentPath = os.path.join(main_path, 'root', 'Users')
+        expected_outcome_folder = ["Folder created TEST_ALL"]
+        expected_outcome_write = ["File TESTALL.txt is created"]
+
+        for expected_folder, expected_write, in zip(expected_outcome_folder, expected_outcome_write):
+            self.assertEqual(usr.create_directory("TEST_ALL"), expected_folder)
+            self.assertEqual(usr.write_file("TESTALL.txt", '*** This is test ***'), expected_write)
+
+        os.rmdir('TEST_ALL')
+        os.remove('TESTALL.txt')
+        os.chdir(main_path)
+
+
+
     
