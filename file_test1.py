@@ -71,6 +71,7 @@ class TCPconnectionCheck(unittest.TestCase):
         outcome.append(usr.write_file(input_check[1], 'testing'))
 
         self.assertEqual(outcome, expected_outcome)
+        os.remove('text.txt')
         os.chdir(main_path)
     
 
