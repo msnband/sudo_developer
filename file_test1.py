@@ -11,10 +11,10 @@ server1.my_server()
 class TCPconnectionCheck(unittest.TestCase):
 
     def repr_test(self):
+
         usr = class_file.User('name', 'password', 'user')
         expected_outcome = 'name'
         outcome = str(usr)
-
         self.assertEqual(outcome, expected_outcome)
 
     def login_register_test(self):
@@ -110,7 +110,17 @@ class TCPconnectionCheck(unittest.TestCase):
         self.assertEqual(outcome, expected_outcome)
         os.chdir(main_path)
 
-    def write_nontext_test(self):
+
+    def write_noninput_test(self):
+
+        usr = class_file.User('name', 'password', 'user')
+        usr.currentPath = os.path.join(main_path, 'root', 'Users')
+        expected_outcome = "File text1.txt is erased"
+        outcome = usr.write_nontext('text1.txt')
+        self.assertEqual(outcome, expected_outcome)
+        os.chdir(main_path)
+
+    def create_write_test(self):
         
         usr = class_file.User("name", "password", "user")
         usr.currentPath = os.path.join(main_path, 'root', 'Users')
@@ -125,22 +135,24 @@ class TCPconnectionCheck(unittest.TestCase):
         os.remove('TESTALL.txt')
         os.chdir(main_path)
 
+    
+    def read_write_test(self):
+
+        usr = class_file.User("name", 'password', 'user')
+        usr.currentPath = os.path.join(main_path, 'root', 'Users')
+        expected_write_c = "File textread.txt is created"
+        expected_read_c = "This file contains some text: \n\n" + "This is writen to test" + "\n\n"
+
+        self.assertEqual(usr.write_file('textread.txt', ['This is writen to test']), expected_write_c)
+        self.assertEqual((usr.read_file('textread.txt')), expected_read_c) 
+
+        os.remove('textread.txt')
+        os.chdir(main_path)
 
 
 
 
 
-
-
-
-
-
-
-
-
-
-
-        
 
 if __name__ == "__main__":
     unittest.main()
