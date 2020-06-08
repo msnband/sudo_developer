@@ -10,6 +10,13 @@ server1.my_server()
 
 class TCPconnectionCheck(unittest.TestCase):
 
+    def repr_test(self):
+        usr = class_file.User('name', 'password', 'user')
+        expected_outcome = 'name'
+        outcome = str(usr)
+
+        self.assertEqual(outcome, expected_outcome)
+
     def login_register_test(self):
 
         os.chdir(main_path)
@@ -30,3 +37,12 @@ class TCPconnectionCheck(unittest.TestCase):
             os.removedirs(os.path.join('Users', 'temp'))
         except FileNotFoundError:
             os.removedirs(os.path.join("Admins", "temp"))
+
+        new_user = []
+        for user in user_list:
+            if user.username != 'temp':
+                new_user.append(user)
+            
+        listFile = open('reg.pickle', 'wb')
+        pickle.dump(new_user, listFile)
+        listFile.close()
