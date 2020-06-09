@@ -149,9 +149,14 @@ class TCPconnectionCheck(unittest.TestCase):
         os.remove('textread.txt')
         os.chdir(main_path)
 
+    def readfile_empty_test(self):
 
-
-
+        usr = class_file.User("name", 'password', 'user')
+        usr.currentPath = os.path.join(main_path, 'root', "Users")
+        expected_outcome = '* Request not accepted *'
+        outcome = usr.read_file('empty.txt')
+        os.chdir(main_path)
+        self.assertEqual(outcome, expected_outcome)
 
 
 if __name__ == "__main__":
