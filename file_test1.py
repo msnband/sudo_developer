@@ -21,7 +21,7 @@ class TCPconnectionCheck(unittest.TestCase):
 
         os.chdir(main_path)
         serv = server1.my_server()
-        expected_outcome = ["Congratulations. New user is registered succesfully...", "Username you enterd is not valid or already exists"]
+        expected_outcome = ["New user is registered succesfully...", "Username you enterd is not valid or already exists"]
         outcome = []
 
         outcome.append(serv.register('temp', 'pwd', 'user')[:27])
@@ -59,12 +59,11 @@ class TCPconnectionCheck(unittest.TestCase):
         os.chdir(main_path)
         self.assertEqual(outcome, expected_outcome)
 
-    
 
     def write_file_test(self):
 
-        usr = class_file.User("name", 'password', 'user')
-        usr.currentPath = os.path.join(main_path, 'root', "Users")
+        usr = class_file.User('name', 'password', 'user')
+        usr.currentPath = os.path.join(main_path, "root", "Users")
         expected_outcome = ["File text.txt is created", "File text.txt is updated"]
         outcome = []
         input_check = ['text.txt', 'text.txt']
@@ -80,15 +79,15 @@ class TCPconnectionCheck(unittest.TestCase):
 
         usr = class_file.User('name', "password", 'user')
         usr.currentPath = os.path.join(main_path, 'root', 'Users')
-        expected_outcome = ["Folder create TESTING", "Folder already exists TESTING"]
+        expected_outcome = ["Folder testing created", "Folder testing already exists"]
         outcome = []
-        input_check = ["TESTING", "TESTING"]
+        input_check = ["testing", "testing"]
 
         outcome.append(usr.create_directory(input_check[0]))
         outcome.append(usr.create_directory(input_check[1]))
 
         self.assertEqual(outcome, expected_outcome)
-        os.rmdir("TESTING")
+        os.rmdir("testing")
         os.chdir(main_path)
 
     def list_file_test(self):
@@ -155,7 +154,7 @@ class TCPconnectionCheck(unittest.TestCase):
 
         usr = class_file.User("name", 'password', 'user')
         usr.currentPath = os.path.join(main_path, 'root', "Users")
-        expected_outcome = '* Request not accepted *'
+        expected_outcome = "* Request not accepted *"
         outcome = usr.read_file('empty.txt')
         os.chdir(main_path)
         self.assertEqual(outcome, expected_outcome)
