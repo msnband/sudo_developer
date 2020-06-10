@@ -59,6 +59,8 @@ class TCPconnectionCheck(unittest.TestCase):
         os.chdir(main_path)
         self.assertEqual(outcome, expected_outcome)
 
+    
+
     def write_file_test(self):
 
         usr = class_file.User("name", 'password', 'user')
@@ -155,6 +157,15 @@ class TCPconnectionCheck(unittest.TestCase):
         usr.currentPath = os.path.join(main_path, 'root', "Users")
         expected_outcome = '* Request not accepted *'
         outcome = usr.read_file('empty.txt')
+        os.chdir(main_path)
+        self.assertEqual(outcome, expected_outcome)
+
+    def previous_directory_test(self):
+
+        usr = class_file.User('name', 'password', 'user')
+        usr.currentPath = os.path.join(main_path, 'root', 'Users', 'name')
+        expected_outcome = "User not permitted to leave the home folder! "
+        outcome = usr.change_directory("..")
         os.chdir(main_path)
         self.assertEqual(outcome, expected_outcome)
 
