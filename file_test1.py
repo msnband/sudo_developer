@@ -1,4 +1,7 @@
-
+""" 
+    This module contains the test required for Lab3
+    The following libraries are imported to use in this module.
+"""
 import os
 import server1
 import class_file
@@ -9,8 +12,10 @@ main_path = os.getcwd()
 server1.my_server()
 
 class TCPconnectionCheck(unittest.TestCase):
+    """ This class designed to handle all test functions """
 
     def repr_test(self):
+        # Test function to print the username
 
         usr = class_file.User('name', 'password', 'user')
         expected_outcome = 'name'
@@ -18,7 +23,9 @@ class TCPconnectionCheck(unittest.TestCase):
         self.assertEqual(outcome, expected_outcome)
 
     def login_register_test(self):
+        # Test for registering and logging on the user
 
+        # switch to current working directory
         os.chdir(main_path)
         serv = server1.my_server()
         expected_outcome = ["New user is registered succesfully...", "Username you enterd is not valid or already exists"]
@@ -30,6 +37,7 @@ class TCPconnectionCheck(unittest.TestCase):
         expected_login_outcome = "temp: You logged in successfully."
         login_outcome = (serv.login('temp', 'pwd', 'tcp port')[:22])
 
+        # delete user before start next test
         with open ('reg.pickle', 'rb') as listFile:
             user_list = pickle.load(listFile)
 
@@ -51,6 +59,7 @@ class TCPconnectionCheck(unittest.TestCase):
         self.assertEqual(outcome, expected_outcome)
 
     def change_directory_test(self):
+        # Check for changing root and user directory.
 
         usr = class_file.User('name', 'password', 'user')
         usr.currentPath = os.path.join(main_path, 'root', 'Users')
@@ -61,6 +70,7 @@ class TCPconnectionCheck(unittest.TestCase):
 
 
     def write_file_test(self):
+        # Check to write text in root and user directory
 
         usr = class_file.User('name', 'password', 'user')
         usr.currentPath = os.path.join(main_path, "root", "Users")
@@ -72,10 +82,13 @@ class TCPconnectionCheck(unittest.TestCase):
         outcome.append(usr.write_file(input_check[1], 'testing'))
 
         self.assertEqual(outcome, expected_outcome)
+        # delete created test file after test is completed and
+        # change to main directory
         os.remove('text.txt')
         os.chdir(main_path)
     
     def create_directory_test(self):
+        # Check tp create root and user directory
 
         usr = class_file.User('name', "password", 'user')
         usr.currentPath = os.path.join(main_path, 'root', 'Users')
@@ -87,10 +100,13 @@ class TCPconnectionCheck(unittest.TestCase):
         outcome.append(usr.create_directory(input_check[1]))
 
         self.assertEqual(outcome, expected_outcome)
+        # delete created test file after test is completed and
+        # change to main directory
         os.rmdir("testing")
         os.chdir(main_path)
 
     def list_file_test(self):
+        # Check to list contents of root and user directory
 
         usr = class_file.User("name", "password", "user")
         usr.currentPath = os.path.join(main_path, 'root', 'Users')
@@ -131,7 +147,9 @@ class TCPconnectionCheck(unittest.TestCase):
         for expected_folder, expected_write, in zip(expected_outcome_folder, expected_outcome_write):
             self.assertEqual(usr.create_directory("TEST_ALL"), expected_folder)
             self.assertEqual(usr.write_file("TESTALL.txt", '*** This is test ***'), expected_write)
-
+        
+        # delete created test file after test is completed and
+        # change to main directory
         os.rmdir('TEST_ALL')
         os.remove('TESTALL.txt')
         os.chdir(main_path)
@@ -151,7 +169,7 @@ class TCPconnectionCheck(unittest.TestCase):
         os.chdir(main_path)
 
     def readfile_empty_test(self):
-
+        # check for read function to read empty file
         usr = class_file.User("name", 'password', 'user')
         usr.currentPath = os.path.join(main_path, 'root', "Users")
         expected_outcome = "* Request not accepted *"
@@ -160,10 +178,11 @@ class TCPconnectionCheck(unittest.TestCase):
         self.assertEqual(outcome, expected_outcome)
 
     def previous_directory_test(self):
+        # Test to change directory to return to previous directory and folder
 
         usr = class_file.User('name', 'password', 'user')
         usr.currentPath = os.path.join(main_path, 'root', 'Users', 'name')
-        expected_outcome = "User not permitted to leave the home folder! "
+        expected_outcome = "User not permitted to leave from home! "
         outcome = usr.change_directory("..")
         os.chdir(main_path)
         self.assertEqual(outcome, expected_outcome)
