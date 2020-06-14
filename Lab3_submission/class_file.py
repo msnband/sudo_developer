@@ -16,12 +16,6 @@ class User:
         self.index = 0
         self.file_name = ""
 
-        """ Attributes:
-        user_name = string
-        password = string
-        privileges = string
-        currentPath = string """
-
     def __repr__(self):
         return self.user_name
 
@@ -173,11 +167,7 @@ class Admin(User):
         """ This function is designed to delete registered 
         username and password. Only user with Admin privileges 
         is permitted to delete user from system. """
-    
-        """ Attributes:
-        user_name = str
-        password = str
-        rootPath = str """
+
         # Change to root folder
         os.chdir(rootPath)  
         try:
