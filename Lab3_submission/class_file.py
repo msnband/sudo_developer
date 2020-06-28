@@ -64,8 +64,8 @@ class User:
         # Open the file to remove its contents
         file_erase = open(file_name, 'w')
         file_erase.close()
-        print(f"Folder {file_name} is removed.")
-        outcome = "Folder" + file_name + "is removed"
+        outcome = "Folder " + file_name + " is removed"
+        print(outcome)
         return outcome
 
     def write_file(self, file_name, text):
