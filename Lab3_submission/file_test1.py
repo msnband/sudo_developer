@@ -56,7 +56,7 @@ class TCPconnectionCheck(unittest.TestCase):
         """ Check for changing root and user directory.
         for doing this function, root and users folder should be already created
         """
-        usr = class_file.User('name', 'password', 'user')
+        usr = class_file.User("name", "password", "user")
         usr.currentPath = os.path.join(main_path, 'root')
         expected_outcome = "You are located in " + usr.currentPath+"\\Users"
         outcome = usr.change_directory("Users")

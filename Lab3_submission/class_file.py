@@ -109,6 +109,7 @@ class User:
     def change_directory(self, directory_name):
         """This function is designed to be able to move along the directories and folders
         to see the contents... """
+        
         print("You are located in ", os.getcwd())
         try:
             if directory_name == '..':

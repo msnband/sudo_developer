@@ -30,7 +30,7 @@ class my_server:
             if not os.path.exists("Admins"):
                 os.mkdir("Admins")
             if not os.path.exists("Users"):
-                os.mkdir("Usesr")
+                os.mkdir("Users")
         print(f"{self.absolute_addr} is created...")
         # initialize an empty dictionary is 
         # users when first connection is established.
