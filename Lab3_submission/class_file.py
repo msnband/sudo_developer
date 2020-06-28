@@ -51,7 +51,7 @@ class User:
                 outcome = file_to_read.read(100)
                 file_to_read.close()
                 self.index = 100
-            return "File content are: \n\n" + outcome + "\n\n"
+            return "File content are: \n\n" +outcome+ "\n\n"
         except OSError:
             print("* Request not accepted *")
             return "* Request not accepted *"
@@ -115,8 +115,9 @@ class User:
                 # Controling user from leaving the home folder
                 if self.privilege == "user" and os.path.basename(\
                     self.currentPath) == self.user_name:
-                    print("User not permitted to leave the home folder! ")
-                    return "User not permitted to leave the home folder! "
+                    outcome = "User not permitted to leave the home folder!"
+                    print(outcome)
+                    return outcome
                 # Controling admin from leaving the home folder
                 if self.privilege == "admin" and os.path.basename(\
                     self.currentPath) == 'root':
