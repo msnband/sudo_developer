@@ -20,38 +20,38 @@ class TCPconnectionCheck(unittest.TestCase):
         outcome = str(usr)
         self.assertEqual(outcome, expected_outcome)
 
-    # def test_login_register(self):
-    #     """ Test for registering and logging on the user 
-    #             for doing this function, root and users folder should be already created
-    #     """
-    #     # switch to current working directory
-    #     os.chdir(main_path)
-    #     serv = server1.my_server()
-    #     expected_outcome = ["New user is registered succesfully...", "Username you enterd is not valid or already exists"]
-    #     outcome = []
-    #     outcome.append(serv.register('temp', 'pwd', 'user')[:27])
-    #     outcome.append(serv.register('temp', 'pwd', 'user')[:27])
-    #     expected_login_outcome = "temp: You logged in successfully."
-    #     login_outcome = (serv.login('temp', 'pwd', 'tcp port')[:22])
+    def test_login_register(self):
+        """ Test for registering and logging on the user 
+                for doing this function, root and users folder should be already created
+        """
+        # switch to current working directory
+        os.chdir(main_path)
+        serv = server1.my_server()
+        expected_outcome = ["Congratulations. New user is registered succesfully", "Username you enterd is not valid or already exists"]
+        outcome = []
+        outcome.append(serv.register('temp', 'pwd', 'user')[:70])
+        outcome.append(serv.register('temp', 'pwd', 'user')[:70])
+        expected_login_outcome = "Successfully logged in"
+        login_outcome = (serv.login('temp', 'pwd', 'tcp port')[:22])
 
-    #     # delete user before start next test
-    #     with open('reg.pickle', 'rb') as listFile:
-    #         user_list = pickle.load(listFile)
-    #     try:
-    #         os.removedirs(os.path.join('Users', 'temp'))
-    #     except FileNotFoundError:
-    #         os.removedirs(os.path.join("Admins", "temp"))
+        # delete user before start next test
+        with open('reg.pickle', 'rb') as listFile:
+            user_list = pickle.load(listFile)
+        try:
+            os.removedirs(os.path.join('Users', 'temp'))
+        except FileNotFoundError:
+            os.removedirs(os.path.join("Admins", "temp"))
 
-    #     new_user = []
-    #     for user in user_list:
-    #         if user.username != 'temp':
-    #             new_user.append(user)      
-    #     listFile = open('reg.pickle', 'wb')
-    #     pickle.dump(new_user, listFile)
-    #     listFile.close()
+        new_user = []
+        for user in user_list:
+            if user.user_name != 'temp':
+                new_user.append(user)      
+        listFile = open('reg.pickle', 'wb')
+        pickle.dump(new_user, listFile)
+        listFile.close()
 
-    #     self.assertEqual(login_outcome, expected_login_outcome)
-    #     self.assertEqual(outcome, expected_outcome)
+        self.assertEqual(login_outcome, expected_login_outcome)
+        self.assertEqual(outcome, expected_outcome)
 
     def test_change_directory(self):
         """ Check for changing root and user directory.
@@ -59,10 +59,11 @@ class TCPconnectionCheck(unittest.TestCase):
         """
         usr = class_file.User("name", "password", "user")
         usr.currentPath = os.path.join(main_path, 'root')
-        expected_outcome = "You are located in " + usr.currentPath+"\\Users"
+        expected_outcome = "You are located in "\
+             + usr.currentPath+"\\Users"
         outcome = usr.change_directory("Users")
         os.chdir(main_path)
-        self.assertEqual(outcome, expected_outcome)
+        self.assertEqual(outcome, expected_outcome)   
 
     def test_write_file(self):
         """ Check to write text in root and user directory
@@ -70,7 +71,8 @@ class TCPconnectionCheck(unittest.TestCase):
         """
         usr = class_file.User("name", "password", "user")
         usr.currentPath = os.path.join(main_path, "root", "Users")
-        expected_outcome = ["File text.txt is updated.", "File text.txt is updated."]
+        expected_outcome = ["File text.txt is updated.",\
+             "File text.txt is updated."]
         outcome = []
         input_check = ['text.txt', 'text.txt']
         outcome.append(usr.write_file(input_check[0],'testing'))
@@ -88,7 +90,8 @@ class TCPconnectionCheck(unittest.TestCase):
         """
         usr = class_file.User('name', "password", 'user')
         usr.currentPath = os.path.join(main_path, "root", "Users")
-        expected_outcome = ["Folder testing created", "Folder testing created"]
+        expected_outcome = ["Folder testing created", \
+            "Folder testing created"]
         outcome = []
         input_check = ["testing","testing"]
         outcome.append(usr.create_directory(input_check[0]))
@@ -137,9 +140,11 @@ class TCPconnectionCheck(unittest.TestCase):
         usr.currentPath = os.path.join(main_path, "root", "Users")
         expected_outcome_folder = ["Folder TEST_ALL created"]
         expected_outcome_write = ["File TESTALL.txt is updated."]
-        for expected_folder, expected_write, in zip(expected_outcome_folder, expected_outcome_write):
+        for expected_folder, expected_write, in zip(\
+            expected_outcome_folder, expected_outcome_write):
             self.assertEqual(usr.create_directory("TEST_ALL"), expected_folder)
-            self.assertEqual(usr.write_file("TESTALL.txt", '*** This is test ***'), expected_write)
+            self.assertEqual(usr.write_file("TESTALL.txt", \
+                '*** This is test ***'), expected_write)
         
         # delete created test file after test is completed and
         # change to main directory
@@ -155,7 +160,8 @@ class TCPconnectionCheck(unittest.TestCase):
         usr.currentPath = os.path.join(main_path, "root", "Users")
         expected_write_c = "File textread.txt is updated."
         expected_read_c = "File content are: \n\n"+"HelloWorld\n\n"
-        self.assertEqual(usr.write_file('textread.txt', ['HelloWorld']), expected_write_c)
+        self.assertEqual(usr.write_file('textread.txt',\
+             ['HelloWorld']), expected_write_c)
         self.assertEqual((usr.read_file('textread.txt')), expected_read_c)
         os.remove('textread.txt')
         os.chdir(main_path)

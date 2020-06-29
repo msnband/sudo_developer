@@ -60,12 +60,12 @@ class my_server:
                 group = "Users"
                 os.makedirs(os.path.join(group, user_name))
             # Showing and returning related messages in server.
-            print("Congratulations. New user is registered succesfully...")
-            return "Congratulations. New user is registered succesfully..."  
+            print("Congratulations. New user is registered succesfully")
+            return "Congratulations. New user is registered succesfully"  
         # Check if the username is already exists, return proper message
         print("Username you enterd is not valid or already exists")
         return "Username you enterd is not valid or already exists"
-
+        
     def login(self, user_name, password, tcpIP):
         """ login to system with registered username and password"""
         os.chdir(self.absolute_addr)
