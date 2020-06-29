@@ -51,7 +51,7 @@ class User:
                 outcome = file_to_read.read(100)
                 file_to_read.close()
                 self.index = 100
-            return "File content are: \n\n" +outcome+ "\n\n"
+            return "File content are: \n\n" + outcome + "\n"
         except OSError:
             print("* Request not accepted *")
             return "* Request not accepted *"
@@ -81,12 +81,12 @@ class User:
                 file_to_add = open(file_name, 'a')
                 file_to_add.write(inputData + "\n")
                 file_to_add.close()
-                outcome = " File " + file_name + " is updated. "
+                outcome = "File "+file_name+ " is updated."
                 return outcome
             file_to_write = open(file_name, 'w')
             file_to_write.write(inputData + "\n")
             file_to_write.close()
-            outcome = " File " + file_name + " is created now. "
+            outcome = "File " + file_name + " is updated."
             return outcome
         # Error handling in case required file is not exist!
         except FileNotFoundError:
@@ -102,9 +102,9 @@ class User:
             print(f"Directory {folder_name} is created.")
         # Error handling in case the given name is already exist!
         except FileExistsError:
-            outcome = folder_name + "* is created! *"
+            outcome = "Folder " + folder_name + " created"
             print(outcome)
-        return folder_name + "* is created! *"
+        return "Folder " + folder_name + " created"
 
     def change_directory(self, directory_name):
         """This function is designed to be able to move along the directories and folders
