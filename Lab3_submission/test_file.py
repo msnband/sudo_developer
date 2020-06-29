@@ -5,12 +5,11 @@
 import os
 import pickle
 import unittest
-import server1
+import server
 import class_file
 
 MAIN_PATH = os.getcwd()
-server1.my_server()
-
+server.my_server()
 class TCPconnectionCheck(unittest.TestCase):
     """ This class designed to handle all test functions """
     def test_repr(self):
@@ -26,7 +25,7 @@ class TCPconnectionCheck(unittest.TestCase):
         """
         # switch to current working directory
         os.chdir(MAIN_PATH)
-        serv = server1.my_server()
+        serv = server.my_server()
         expected_outcome = ["Congratulations. New user is registered succesfully", "Username you enterd is not valid or already exists"]
         outcome = []
         outcome.append(serv.register('temp', 'pwd', 'user')[:70])
