@@ -61,7 +61,7 @@ class my_server:
                 os.makedirs(os.path.join(group, user_name))
             # Showing and returning related messages in server.
             print("Congratulations. New user is registered succesfully")
-            return "Congratulations. New user is registered succesfully"  
+            return "Congratulations. New user is registered succesfully" 
         # Check if the username is already exists, return proper message
         print("Username you enterd is not valid or already exists")
         return "Username you enterd is not valid or already exists"

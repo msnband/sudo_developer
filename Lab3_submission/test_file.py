@@ -3,12 +3,12 @@
     The following libraries are imported to use in this module.
 """
 import os
-import server1
-import class_file
 import pickle
 import unittest
+import server1
+import class_file
 
-main_path = os.getcwd()
+MAIN_PATH = os.getcwd()
 server1.my_server()
 
 class TCPconnectionCheck(unittest.TestCase):
@@ -25,7 +25,7 @@ class TCPconnectionCheck(unittest.TestCase):
                 for doing this function, root and users folder should be already created
         """
         # switch to current working directory
-        os.chdir(main_path)
+        os.chdir(MAIN_PATH)
         serv = server1.my_server()
         expected_outcome = ["Congratulations. New user is registered succesfully", "Username you enterd is not valid or already exists"]
         outcome = []
@@ -35,8 +35,8 @@ class TCPconnectionCheck(unittest.TestCase):
         login_outcome = (serv.login('temp', 'pwd', 'tcp port')[:22])
 
         # delete user before start next test
-        with open('reg.pickle', 'rb') as listFile:
-            user_list = pickle.load(listFile)
+        with open('reg.pickle', 'rb') as listfile:
+            user_list = pickle.load(listfile)
         try:
             os.removedirs(os.path.join('Users', 'temp'))
         except FileNotFoundError:
@@ -46,9 +46,9 @@ class TCPconnectionCheck(unittest.TestCase):
         for user in user_list:
             if user.user_name != 'temp':
                 new_user.append(user)      
-        listFile = open('reg.pickle', 'wb')
-        pickle.dump(new_user, listFile)
-        listFile.close()
+        listfile = open('reg.pickle', 'wb')
+        pickle.dump(new_user, listfile)
+        listfile.close()
 
         self.assertEqual(login_outcome, expected_login_outcome)
         self.assertEqual(outcome, expected_outcome)
@@ -58,11 +58,11 @@ class TCPconnectionCheck(unittest.TestCase):
         for doing this function, root and users folder should be already created
         """
         usr = class_file.User("name", "password", "user")
-        usr.currentPath = os.path.join(main_path, 'root')
+        usr.currentPath = os.path.join(MAIN_PATH, 'root')
         expected_outcome = "You are located in "\
              + usr.currentPath+"\\Users"
         outcome = usr.change_directory("Users")
-        os.chdir(main_path)
+        os.chdir(MAIN_PATH)
         self.assertEqual(outcome, expected_outcome)   
 
     def test_write_file(self):
@@ -70,74 +70,76 @@ class TCPconnectionCheck(unittest.TestCase):
         for doing this function, root and users folder should be already created.
         """
         usr = class_file.User("name", "password", "user")
-        usr.currentPath = os.path.join(main_path, "root", "Users")
-        expected_outcome = ["File text.txt is updated.",\
+        usr.currentPath = os.path.join(MAIN_PATH, "root", "Users")
+        expected_outcome = ["File text.txt is updated.", \
              "File text.txt is updated."]
         outcome = []
         input_check = ['text.txt', 'text.txt']
-        outcome.append(usr.write_file(input_check[0],'testing'))
-        outcome.append(usr.write_file(input_check[1],'testing'))
+        outcome.append(usr.write_file(input_check[0], 'testing'))
+        outcome.append(usr.write_file(input_check[1], 'testing'))
 
         self.assertEqual(outcome, expected_outcome)
         # delete created test file after test is completed and
         # change to main directory
         os.remove('text.txt')
-        os.chdir(main_path)
+        os.chdir(MAIN_PATH)
     
     def test_create_directory(self):
         """ Check tp create root and user directory
         for doing this function, root and users folder should be already created.
         """
         usr = class_file.User('name', "password", 'user')
-        usr.currentPath = os.path.join(main_path, "root", "Users")
+        usr.currentPath = os.path.join(MAIN_PATH, "root", "Users")
         expected_outcome = ["Folder testing created", \
             "Folder testing created"]
         outcome = []
-        input_check = ["testing","testing"]
+        input_check = ["testing", "testing"]
         outcome.append(usr.create_directory(input_check[0]))
         outcome.append(usr.create_directory(input_check[1]))
         self.assertEqual(outcome, expected_outcome)
         # delete created test file after test is completed and
         # change to main directory
         os.rmdir("testing")
-        os.chdir(main_path)
+        os.chdir(MAIN_PATH)
 
     def test_list_file(self):
         """ Check to list contents of root and user directory
         for doing this function, root and users folder should be already created.
         """
         usr = class_file.User("name", "password", "user")
-        usr.currentPath = os.path.join(main_path, 'root', 'Users')
+        usr.currentPath = os.path.join(MAIN_PATH, 'root', 'Users')
         usr.create_directory("file_test")
         usr.currentPath = os.path.join(usr.currentPath, "file_test")
         expected_outcome = '* Folder is empty *'
         outcome = usr.list_file()
         self.assertEqual(outcome, expected_outcome)
-        os.chdir(main_path)
+        os.chdir(MAIN_PATH)
 
     def test_read_noninput(self):
-
+        """ Check the readfile wether the user passed
+            without any name for the file root and Users directory.
+        """
         usr = class_file.User("name", 'password', 'user')
-        usr.currentPath = os.path.join(main_path, "root", "Users")
+        usr.currentPath = os.path.join(MAIN_PATH, "root", "Users")
         usr.file_name = "random_file.extension "
         expected_outcome = "random_file.extension file has been closed"
         outcome = usr.read_noninput()
         self.assertEqual(outcome, expected_outcome)
-        os.chdir(main_path)
+        os.chdir(MAIN_PATH)
 
     def test_write_noninput(self):
 
         usr = class_file.User("name", "password", "user")
-        usr.currentPath = os.path.join(main_path, "root", "Users")
+        usr.currentPath = os.path.join(MAIN_PATH, "root", "Users")
         expected_outcome = "Folder text1.txt is removed"
         outcome = usr.write_nontext('text1.txt')
         self.assertEqual(outcome, expected_outcome)
-        os.chdir(main_path)
+        os.chdir(MAIN_PATH)
 
     def test_create_write(self):
         
         usr = class_file.User("name", "password", "user")
-        usr.currentPath = os.path.join(main_path, "root", "Users")
+        usr.currentPath = os.path.join(MAIN_PATH, "root", "Users")
         expected_outcome_folder = ["Folder TEST_ALL created"]
         expected_outcome_write = ["File TESTALL.txt is updated."]
         for expected_folder, expected_write, in zip(\
@@ -150,21 +152,21 @@ class TCPconnectionCheck(unittest.TestCase):
         # change to main directory
         os.rmdir('TEST_ALL')
         os.remove('TESTALL.txt')
-        os.chdir(main_path)
+        os.chdir(MAIN_PATH)
 
     def test_read_write(self):
         """ Check for read and write function.
         for doing this function, root and users folder should be already created
         """
         usr = class_file.User("name", "password", "user")
-        usr.currentPath = os.path.join(main_path, "root", "Users")
+        usr.currentPath = os.path.join(MAIN_PATH, "root", "Users")
         expected_write_c = "File textread.txt is updated."
         expected_read_c = "File content are: \n\n"+"HelloWorld\n\n"
         self.assertEqual(usr.write_file('textread.txt',\
              ['HelloWorld']), expected_write_c)
         self.assertEqual((usr.read_file('textread.txt')), expected_read_c)
         os.remove('textread.txt')
-        os.chdir(main_path)
+        os.chdir(MAIN_PATH)
 
     def test_readfile_empty(self):
         """ check for read function to read empty file
@@ -172,10 +174,10 @@ class TCPconnectionCheck(unittest.TestCase):
         should be already created
         """
         usr = class_file.User("name", 'password', 'user')
-        usr.currentPath = os.path.join(main_path, 'root', "Users")
+        usr.currentPath = os.path.join(MAIN_PATH, 'root', "Users")
         expected_outcome = "* Request not accepted *"
         outcome = usr.read_file('empty.txt')
-        os.chdir(main_path)
+        os.chdir(MAIN_PATH)
         self.assertEqual(outcome, expected_outcome)
 
     def test_previous_directory(self):
@@ -183,11 +185,11 @@ class TCPconnectionCheck(unittest.TestCase):
         for doing this function, root and users folder should be already created.
         """
         usr = class_file.User('name', 'password', 'user')
-        usr.currentPath = os.path.join(main_path, \
+        usr.currentPath = os.path.join(MAIN_PATH, \
             'root', 'Users', 'name')
         expected_outcome = "User not permitted to leave the home folder!"  
         outcome = usr.change_directory("..")
-        os.chdir(main_path)
+        os.chdir(MAIN_PATH)
         self.assertEqual(outcome, expected_outcome)
 
 if __name__ == "__main__":
