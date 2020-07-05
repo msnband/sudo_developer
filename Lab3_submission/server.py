@@ -9,7 +9,7 @@ import asyncio
 import class_file
 # press Ctrl + C to stop connection.
 signal.signal(signal.SIGINT, signal.SIG_DFL)
-class my_server:
+class MyServer:
     """ This class is designed to connect server to client 
     and also handling required commands in the assignemnet task. """
     def __init__(self):
@@ -316,7 +316,7 @@ class my_server:
             await server.serve_forever()
 
 if __name__ == "__main__":
-    # creating object from 'my_server'.
-    Newserver = my_server()
+    # creating object from 'MyServer'.
+    Newserver = MyServer()
     asyncio.run(Newserver.main())
             

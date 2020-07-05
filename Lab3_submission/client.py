@@ -4,8 +4,8 @@ import signal
 import asyncio
 #press Ctrl + C to stop connection.
 signal.signal(signal.SIGINT, signal.SIG_DFL) 
-class my_client:
-    """ The class "my_client" is designed to connect client to 
+class MyClient:
+    """ The class "MyClient" is designed to connect client to 
     server and handling some commands which asked in the task."""
     def __init__(self):
         """ Initializing a list to record user inputs commands."""
@@ -80,6 +80,6 @@ class my_client:
             print("\nCommand received: \n\n ", incoming_command.decode())
 
 if __name__ == "__main__":
-    #creating object from 'my_client'.
-    client = my_client()
+    #creating object from 'MyClient'.
+    client = MyClient()
     asyncio.run(client.client('127.0.0.1', 8080))

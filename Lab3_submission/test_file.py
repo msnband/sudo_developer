@@ -9,7 +9,7 @@ import server
 import class_file
 
 MAIN_PATH = os.getcwd()
-server.my_server()
+server.MyServer()
 class TCPconnectionCheck(unittest.TestCase):
     """ This class designed to handle all test functions """
     def test_repr(self):
@@ -25,7 +25,7 @@ class TCPconnectionCheck(unittest.TestCase):
         """
         # switch to current working directory
         os.chdir(MAIN_PATH)
-        serv = server.my_server()
+        serv = server.MyServer()
         expected_outcome = ["Congratulations. New user is registered succesfully", "Username you enterd is not valid or already exists"]
         outcome = []
         outcome.append(serv.register('temp', 'pwd', 'user')[:70])
