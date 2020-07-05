@@ -7,6 +7,7 @@ import os
 import pickle
 import asyncio
 import class_file
+
 # press Ctrl + C to stop connection.
 signal.signal(signal.SIGINT, signal.SIG_DFL)
 class MyServer:
@@ -42,8 +43,8 @@ class MyServer:
         if privileges not in ("admin", "user"):
             return "Privileges should be <user> or <admin>."
         try:
-            with open("reg.pickle", 'rb') as listFile:
-                user_list = pickle.load(listFile)
+            with open("reg.pickle", 'rb') as listfile:
+                user_list = pickle.load(listfile)
         except FileNotFoundError:
             user_list = []
         if privileges == "user":
@@ -66,13 +67,13 @@ class MyServer:
         print("Username you enterd is not valid or already exists")
         return "Username you enterd is not valid or already exists"
         
-    def login(self, user_name, password, tcpIP):
+    def login(self, user_name, password, tcpip):
         """ login to system with registered username and password"""
         os.chdir(self.absolute_addr)
-        with open('reg.pickle', 'rb') as listFile:
-            user_list = pickle.load(listFile)
+        with open('reg.pickle', 'rb') as listfile:
+            user_list = pickle.load(listfile)
         # Check if client is already logged in.
-        if tcpIP in self.loggedIn.keys():
+        if tcpip in self.loggedIn.keys():
             if user_name in [user.user_name for user in self.loggedIn.values()]:
                 return 'The port is already occupied with the same username'
             return 'The port is already occupied with another username'
@@ -103,8 +104,9 @@ class MyServer:
         group = user.privilege.capitalize() + 's'
         print(f'your group is {group}.')
         user.currentPath = os.path.join(self.absolute_addr, group, user_name)
-        self.loggedIn.update({tcpIP: user})
-        outcome = f"Successfully logged in, You are now in root/{group}/{user_name}"
+        self.loggedIn.update({tcpip: user})
+        outcome = f"Successfully logged in, You are now \
+            in root/{group}/{user_name}"
         return outcome
     # main function with loop.
     async def command_handle(self, reader, writer):
@@ -144,7 +146,8 @@ class MyServer:
                 # founded, match the command to user function.
                 if commands_spilit[0] == 'change_folder':
                     try:
-                        writer.write(user.change_directory(commands_spilit[1]).encode())
+                        writer.write(user.change_directory(\
+                            commands_spilit[1]).encode())
                         await writer.drain()
                         os.chdir(self.absolute_addr)
                         continue
@@ -152,7 +155,8 @@ class MyServer:
                     # If user inserted wrong format for 'change_folder' the
                     # following error will occure. 
                     except IndexError:
-                        my_error = "* change folder command should be in form 'change_folder <name>' *"
+                        my_error = "* change folder command should \
+                            be in form 'change_folder <name>' *"
                         print(my_error)
                         writer.write(my_error.encode())
                         await writer.drain()
@@ -162,7 +166,8 @@ class MyServer:
                 if commands_spilit[0] == 'read_file':
                     try:
                         if len(commands_spilit) == 2:
-                            writer.write(user.read_file(commands_spilit[1]).encode())
+                            writer.write(user.read_file(\
+                                commands_spilit[1]).encode())
                             await writer.drain()
                             os.chdir(self.absolute_addr)
                             continue
@@ -174,7 +179,8 @@ class MyServer:
                     # If user inserted wrong format for 'read_file' the
                     # following error will occure.
                     except IndexError:                     
-                        my_error = "read file command should be in form 'read_file <name> '"
+                        my_error = "read file command should \
+                            be in form 'read_file <name> '"
                         print(my_error)
                         writer.write(my_error.encode())
                         await writer.drain()
@@ -184,12 +190,14 @@ class MyServer:
                 if commands_spilit[0] == 'write_file':
                     try:
                         if len(commands_spilit) >= 3:
-                            writer.write(user.write_file(commands_spilit[1], commands_spilit[2:]).\
+                            writer.write(user.write_file(\
+                                commands_spilit[1], commands_spilit[2:]).\
                                 encode(encoding='utf-8'))
                             await writer.drain()
                             os.chdir(self.absolute_addr)
                             continue
-                        writer.write(user.write_nontext(commands_spilit[1]).encode())
+                        writer.write(user.write_nontext(\
+                            commands_spilit[1]).encode())
                         await writer.drain()
                         os.chdir(self.absolute_addr)
                         continue
@@ -197,7 +205,8 @@ class MyServer:
                     # If user inserted wrong format for 'write_file' the
                     # following error will occure.
                     except IndexError:
-                        my_error = "write file command should be in form 'write_file <name> <text> '"
+                        my_error = "write file command should be in \
+                            form 'write_file <name> <text> '"
                         print(my_error)
                         writer.write(my_error.encode())
                         await writer.drain()
@@ -206,7 +215,8 @@ class MyServer:
                 # founded, match the command to user function.
                 if commands_spilit[0] == 'create_folder':
                     try:
-                        writer.write(user.create_directory(commands_spilit[1]).encode())
+                        writer.write(user.create_directory(\
+                            commands_spilit[1]).encode())
                         await writer.drain()
                         os.chdir(self.absolute_addr)
                         continue                 
@@ -214,7 +224,8 @@ class MyServer:
                     # If user inserted wrong format for 'create_folder' the
                     # following error will occure.
                     except IndexError:
-                        my_error = "create folder command should be in form 'create_folder <name>'"
+                        my_error = "create folder command should be \
+                            in form 'create_folder <name>'"
                         print(my_error)
                         writer.write(my_error.encode())
                         await writer.drain()
@@ -224,29 +235,32 @@ class MyServer:
                 if commands_spilit[0] == 'delete':
                     try:
                         try:
-                            writer.write(user.delete(commands_spilit[1], commands_spilit[2], \
+                            writer.write(user.delete(commands_spilit[1],\
+                                 commands_spilit[2], \
                                 self.absolute_addr).encode())
                             await writer.drain()
                         # Handling Attribute Error 
                         except AttributeError:
-                            my_error = "* Permission denied! User with privilege 'Admin' has permission to remove commmands. *"
+                            my_error = "* Permission denied! User with privilege 'Admin' \
+                                has permission to remove commmands. *"
                             print(my_error)
                             writer.write(my_error.encode())
                             await writer.drain()
                             continue                        
                         # if the removed user is log in, it should log out from system. 
-                        removedUser = commands_spilit[1]
-                        for logPath, logUser in self.loggedIn.items():
-                            if str(logUser) == removedUser:
-                                del self.loggedIn[logPath]
-                                print(f"{removedUser} is looged out from system.")
+                        removeduser = commands_spilit[1]
+                        for logpath, loguser in self.loggedIn.items():
+                            if str(loguser) == removeduser:
+                                del self.loggedIn[logpath]
+                                print(f"{removeduser} is looged out from system.")
                                 break
-                        print(f"{removedUser} is just logged out from system! ")
+                        print(f"{removeduser} is just logged out from system! ")
                     # Due to working with list indexes, IndeError occured and handled.
                     # If user inserted wrong format for 'delete' the
                     # following error will occure.
                     except IndexError:
-                        my_error = "delete command should be in the form 'delete <username> <password>'"
+                        my_error = "delete command should be in the form\
+                             'delete <username> <password>'"
                         print(my_error)
                         writer.write(my_error.encode())
                         await writer.drain()
@@ -254,8 +268,10 @@ class MyServer:
                 # implementing 'quit' command. If the user object
                 # founded, match the command to user function.
                 if commands == "quit":
-                    print(f"Successfully logged out from system {self.loggedIn[address]}")
-                    writer.write(f"Successfully logged out from system {self.loggedIn[address]}" \
+                    print(f"Successfully logged out from system\
+                         {self.loggedIn[address]}")
+                    writer.write(f"Successfully logged out from system\
+                         {self.loggedIn[address]}" \
                         .encode())
                     del self.loggedIn[address]
                     await writer.drain()
@@ -275,7 +291,8 @@ class MyServer:
                     # If user inserted wrong format for 'register' the
                     # following error will occure.
                     except IndexError:
-                        my_error = "register command should be in the form 'register <username> <password> <privilege>' "
+                        my_error = "register command should be in the form\
+                             'register <username> <password> <privilege>' "
                         print(my_error)
                         writer.write(my_error.encode())
                         await writer.drain()
@@ -284,14 +301,16 @@ class MyServer:
                 # founded, match the command to user function.
                 if commands_spilit[0] == 'login':
                     try:
-                        writer.write(self.login(commands_spilit[1], commands_spilit[2], address).encode())
+                        writer.write(self.login(commands_spilit[1],\
+                             commands_spilit[2], address).encode())
                         await writer.drain()
                         continue
                     # Due to working with list indexes, IndeError occured and handled.
                     # If user inserted wrong format for 'login' the
                     # following error will occure.
                     except IndexError:
-                        my_error = "login command should be in the form 'login <username> <password>' "
+                        my_error = "login command should be in the\
+                             form 'login <username> <password>' "
                         print(my_error)
                         writer.write(my_error.encode())
                         await writer.drain()
@@ -303,7 +322,8 @@ class MyServer:
                     writer.write("Exiting system...".encode())
                     await writer.drain()
                     break
-            writer.write("Syntax issue: Check command spelling & check wether you logged in or not!".encode())
+            writer.write("Syntax issue: Check command spelling &\
+                 check wether you logged in or not!".encode())
             await writer.drain()
 
     async def main(self):

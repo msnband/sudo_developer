@@ -10,7 +10,7 @@ class MyClient:
     def __init__(self):
         """ Initializing a list to record user inputs commands."""
         self.commandList = [] 
-    async def client(self, address, portNumber):
+    async def client(self, address, portnumber):
         """ Main function in client to establish connection with server and handling
         some required commands """
         #check and return proper error if IP is not valid.
@@ -18,9 +18,9 @@ class MyClient:
             assert(j.isnumeric() or j == "."), \
                 " The IP contains wrong or invalid charachters"
         #Check the port number wether in specific range or not.
-        assert 1023 < portNumber < 65535, "Port number is out of range!"
+        assert 1023 < portnumber < 65535, "Port number is out of range!"
         #Establish a TCP connection to server
-        reader, writer = await asyncio.open_connection(address, portNumber)
+        reader, writer = await asyncio.open_connection(address, portnumber)
         #assert proper error if TCP connection has problem.
         assert isinstance(reader, asyncio.streams.StreamReader),\
              "Streamreader on server is not working (message from client)"

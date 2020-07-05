@@ -6,6 +6,7 @@ import os
 import pickle
 import unittest
 import server
+
 import class_file
 
 MAIN_PATH = os.getcwd()

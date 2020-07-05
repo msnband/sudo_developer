@@ -73,18 +73,18 @@ class User:
         this command will implement the required service for user."""
         # Change to current directoty
         os.chdir(self.currentPath)
-        inputData = ' '.join(text)
+        inputdata = ' '.join(text)
         try:
             """ Add to the file if exist """
             if os.path.isfile(file_name):
                 # open file to write on it.
                 file_to_add = open(file_name, 'a')
-                file_to_add.write(inputData + "\n")
+                file_to_add.write(inputdata + "\n")
                 file_to_add.close()
                 outcome = "File "+file_name+ " is updated."
                 return outcome
             file_to_write = open(file_name, 'w')
-            file_to_write.write(inputData + "\n")
+            file_to_write.write(inputdata + "\n")
             file_to_write.close()
             outcome = "File " + file_name + " is updated."
             return outcome
@@ -149,8 +149,8 @@ class User:
         if file_list:
             for File in file_list:
                 # Showing and returning file name
-                fName = os.path.basename(os.getcwd() + '\\' + File)
-                string_return += fName + "\t"
+                fname = os.path.basename(os.getcwd() + '\\' + File)
+                string_return += fname + "\t"
                 # Showing and returning file size
                 file_size = os.path.getsize(os.getcwd() + '\\' + File)
                 string_return += str(file_size) + "\t"
@@ -165,13 +165,13 @@ class Admin(User):
     """ This class is designed to get permission to Admin to delet any user. 
     This class also inherited from class user."""  
 
-    def delete(self, user_name, password, rootPath):
+    def delete(self, user_name, password, rootpath):
         """ This function is designed to delete registered 
         username and password. Only user with Admin privileges 
         is permitted to delete user from system. """
 
         # Change to root folder
-        os.chdir(rootPath)  
+        os.chdir(rootpath)  
         try:
             with open('reg.pickle', 'rb') as user_list_file:
                 user_list = pickle.load(user_list_file)
